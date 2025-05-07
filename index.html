@@ -145,8 +145,16 @@
   <div id="countdownTimer">หมดเวลาใน <span id="timer">05:00:00</span></div>
 
   <script>
+    // รีเฟรชหน้าเว็บอัตโนมัติเมื่อเข้าครั้งแรก
+    if (!sessionStorage.getItem("hasRefreshed")) {
+      sessionStorage.setItem("hasRefreshed", "true");
+      location.reload();
+    } else {
+      sessionStorage.removeItem("hasRefreshed");
+    }
+
     const correctHash = "888df25ae35772424a560c7152a1de794440e0ea5cfee62828333a456a506e05"; 
-    const expireDuration = 120 * 60 * 1000; 
+    const expireDuration = 120 * 60 * 1000;
 
     let sessionTimer;
     let countdownInterval;
@@ -243,15 +251,15 @@
     }
 
     window.onload = checkSession;
-    setInterval(() => {
-  const storedHash = localStorage.getItem("loginHash");
-  if (storedHash && storedHash !== correctHash) {
-    alert("รหัสผ่านถูกเปลี่ยน กรุณาเข้าสู่ระบบใหม่");
-    logout(true);
-  }
-}, 10000); // ตรวจทุก 10 วินาที
 
-    // ตรวจจับคลิก ถ้า hash ไม่ตรงจะเด้งออก
+    setInterval(() => {
+      const storedHash = localStorage.getItem("loginHash");
+      if (storedHash && storedHash !== correctHash) {
+        alert("รหัสผ่านถูกเปลี่ยน กรุณาเข้าสู่ระบบใหม่");
+        logout(true);
+      }
+    }, 10000);
+
     document.addEventListener("click", () => {
       const storedHash = localStorage.getItem("loginHash");
       if (storedHash && storedHash !== correctHash) {
